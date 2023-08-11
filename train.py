@@ -15,15 +15,18 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import mlflow
 
+
 def reset_seeds():
     os.environ['PYTHONHASHSEED'] = str(42)
     tf.random.set_seed(42)
     np.random.seed(42)
     random.seed(42)
 
+
 def read_data():
     data = pd.read_csv('https://raw.githubusercontent.com/renansantosmendes/lectures-cdas-2023/master/fetal_health_reduced.csv')
     return data
+
 
 def prepare_data(data):
     X = data.drop(["fetal_health"], axis=1)
@@ -41,6 +44,7 @@ def prepare_data(data):
 
     return X_train, X_test, y_train, y_test
 
+
 def create_model(input_shape):
     model = Sequential()
     model.add(InputLayer(input_shape=input_shape))
@@ -49,14 +53,17 @@ def create_model(input_shape):
     model.add(Dense(3, activation='softmax'))
     return model
 
+
 def compile_model(model):
     model.compile(loss='sparse_categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
 
+
 def train_model(model, X_train, y_train):
     with mlflow.start_run(run_name='experiment_01') as run:
         model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=3)
+
 
 def main():
     reset_seeds()
@@ -65,6 +72,7 @@ def main():
     model = create_model(input_shape=X_train.shape[1])
     compile_model(model)
     train_model(model, X_train, y_train)
+
 
 if __name__ == "__main__":
     main()
