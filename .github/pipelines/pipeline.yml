@@ -1,8 +1,7 @@
-name: Train-Pipeline
+name: Continuous-Integration
 
 on:
   push:
-  pull_request:
     branches:
     - layers
     - branch_01
